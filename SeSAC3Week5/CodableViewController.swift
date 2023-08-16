@@ -8,6 +8,14 @@
 import UIKit
 import Alamofire
 
+//열거형은 컴파일 시점에 확정되기 때문에
+//컴파일 시 오류 타입을 알 수 있다
+enum ValidationError: Error {
+    case emptyString
+    case isNotInt
+    case isNotDate
+}
+
 class CodableViewController: UIViewController {
 
     var resultText: String = "Apple"
@@ -22,7 +30,85 @@ class CodableViewController: UIViewController {
 
     }
     
+    func validateUserInputError(text: String) throws -> Bool {
+        
+        //빈 칸일 경우
+        guard !(text.isEmpty) else {
+            print("빈 값")
+            throw ValidationError.emptyString
+        }
+        
+        //입력 값이 숫자인지 확인
+        guard Int(text) != nil else {
+            print("숫자 아님")
+            throw ValidationError.isNotInt
+        }
+        
+        //날짜 형식으로 변환되는지 확인
+        guard checkDateFormat(text: text) else {
+            print("잘못된 날짜 형식")
+            throw ValidationError.isNotDate
+        }
+        
+        return true
+    }
     
+    @IBAction func checkButtonClicked(_ sender: Any) {
+        
+        guard let text = dateTextField.text else { return }
+        
+        do {
+            let result = try validateUserInputError(text: text)
+        } catch {
+            print("ERROR")
+        }
+        
+        let example = try? validateUserInputError(text: text)
+        if example == nil {
+            
+        }
+        
+//        if validateUserInput(text: text) {
+//            print("검색 가능. 네트워크 요청 가능")
+//        } else {
+//            print("검색 불가")
+//        }
+    }
+    
+    
+    
+    func validateUserInput(text: String) -> Bool {
+        
+        //빈 칸일 경우
+        guard !(text.isEmpty) else {
+            print("빈 값")
+            return false
+        }
+        
+        //입력 값이 숫자인지 확인
+        guard Int(text) != nil else {
+            print("숫자 아님")
+            return false
+        }
+        
+        //날짜 형식으로 변환되는지 확인
+        guard checkDateFormat(text: text) else {
+            print("잘못된 날짜 형식")
+            return false
+        }
+        
+        return true
+    }
+    
+    func checkDateFormat(text: String) -> Bool {
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyyMMdd"
+        
+        let result = format.date(from: text)
+        
+        return result == nil ? false : true
+    }
     
 //    func fetchLottoData() {
 //        let url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=1080"
