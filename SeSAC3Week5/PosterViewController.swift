@@ -15,7 +15,9 @@ class PosterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        LottoManager.shared.callLotto()
+        LottoManager.shared.callLotto { bonus, number in
+            print("클로저로 꺼내온 값: \(bonus), \(number)")
+        }
         
         posterCollectionView.delegate = self
         posterCollectionView.dataSource = self

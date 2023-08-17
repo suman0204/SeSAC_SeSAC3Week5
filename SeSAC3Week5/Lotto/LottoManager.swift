@@ -16,7 +16,7 @@ class LottoManager {
 //        
 //    }
     
-    func callLotto() {
+    func callLotto(completionHandler: @escaping (Int, Int) -> Void ) {
         
         let url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=1080"
         
@@ -25,6 +25,8 @@ class LottoManager {
                 guard let value = response.value else { return }
                 print("responseDecodable:", value)
                 print(value.bnusNo, value.drwtNo3)
+                
+                completionHandler(value.bnusNo, value.drwtNo3)
             }
         
     }
