@@ -27,6 +27,7 @@
 		8BF852BA2A8C779E00F57338 /* PosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF852B92A8C779E00F57338 /* PosterViewController.swift */; };
 		8BF852BD2A8DA32000F57338 /* Extension+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF852BC2A8DA32000F57338 /* Extension+Alert.swift */; };
 		8BF852C02A8DAB8900F57338 /* LottoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF852BF2A8DAB8900F57338 /* LottoManager.swift */; };
+		8BF852C22A8DB25200F57338 /* ReusableViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF852C12A8DB25200F57338 /* ReusableViewProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		8BF852B92A8C779E00F57338 /* PosterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterViewController.swift; sourceTree = "<group>"; };
 		8BF852BC2A8DA32000F57338 /* Extension+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Alert.swift"; sourceTree = "<group>"; };
 		8BF852BF2A8DAB8900F57338 /* LottoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottoManager.swift; sourceTree = "<group>"; };
+		8BF852C12A8DB25200F57338 /* ReusableViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableViewProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				041AE3D52A899B29007724AE /* Assets.xcassets */,
 				041AE3D72A899B29007724AE /* LaunchScreen.storyboard */,
 				041AE3DA2A899B29007724AE /* Info.plist */,
+				8BF852C12A8DB25200F57338 /* ReusableViewProtocol.swift */,
 			);
 			path = SeSAC3Week5;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				8BF852B32A8C750400F57338 /* PosterCollectionViewCell.swift in Sources */,
 				041AE3CF2A899B28007724AE /* SceneDelegate.swift in Sources */,
 				041AE3E72A899D84007724AE /* Endpoint.swift in Sources */,
+				8BF852C22A8DB25200F57338 /* ReusableViewProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

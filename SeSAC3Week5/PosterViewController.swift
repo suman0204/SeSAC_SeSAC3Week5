@@ -53,7 +53,7 @@ extension PosterViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PosterCollectionViewCell", for: indexPath) as? PosterCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.identifier, for: indexPath) as? PosterCollectionViewCell else {
             return UICollectionViewCell()
         }
         
@@ -65,7 +65,7 @@ extension PosterViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         if kind == UICollectionView.elementKindSectionHeader {
-            guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderPosterCollectionReusableView", for: indexPath) as? HeaderPosterCollectionReusableView else {
+            guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderPosterCollectionReusableView.identifier, for: indexPath) as? HeaderPosterCollectionReusableView else {
                 return UICollectionReusableView()
             }
             
@@ -83,12 +83,13 @@ extension PosterViewController: UICollectionViewDelegate, UICollectionViewDataSo
 extension PosterViewController: CollectionViewAttributeProtocol {
     
     func configureCollectionView() {
+        //Protocol as Type
         posterCollectionView.delegate = self
         posterCollectionView.dataSource = self
         //셀 등록
-        posterCollectionView.register(UINib(nibName: "PosterCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PosterCollectionViewCell")
+        posterCollectionView.register(UINib(nibName: PosterCollectionViewCell.identifier, bundle: nil), forCellWithReuseIdentifier: PosterCollectionViewCell.identifier)
         //헤더로 사용할 reusableView 등록
-        posterCollectionView.register(UINib(nibName: "HeaderPosterCollectionReusableView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderPosterCollectionReusableView")
+        posterCollectionView.register(UINib(nibName: HeaderPosterCollectionReusableView.identifier, bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderPosterCollectionReusableView.identifier)
     }
     
     func configureCollectionViewLayout() {
@@ -103,3 +104,26 @@ extension PosterViewController: CollectionViewAttributeProtocol {
     }
     
 }
+
+
+protocol Test {
+//    func test()
+}
+
+class A: Test { }
+
+class B: Test { }
+
+class C: A {
+    
+}
+
+// 프로토콜을 타입으로 할당해도 된다
+let example: Test = A() // B()도 가능
+
+//let value: A = A()
+
+// C는 A를 상속받고 있기 때문에 타입이 A인 변수에 할당 가능 - 프로토콜도 비슷한 기능을 한다
+let value: A = C()
+
+
