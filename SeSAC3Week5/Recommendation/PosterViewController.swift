@@ -23,6 +23,9 @@ class PosterViewController: UIViewController {
     
     var secondList: Recommendation = Recommendation(totalResults: 0, results: [], page: 0, totalPages: 0)
 
+    var thirdList: Recommendation = Recommendation(totalResults: 0, results: [], page: 0, totalPages: 0)
+    
+    var fourthList: Recommendation = Recommendation(totalResults: 0, results: [], page: 0, totalPages: 0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +46,17 @@ class PosterViewController: UIViewController {
             self.secondList = data
             self.posterCollectionView.reloadData()
         }
+        
+        callRecommendation(id: 157336) { data in
+            self.thirdList = data
+            self.posterCollectionView.reloadData()
+        }
+        
+        callRecommendation(id: 567646) { data in
+            self.fourthList = data
+            self.posterCollectionView.reloadData()
+        }
+        
           // 콜백 지옥..
 //        callRecommendation(id: 671) { data in
 //            self.list = data
@@ -62,16 +76,6 @@ class PosterViewController: UIViewController {
     func callRecommendation(id: Int, completionHandler: @escaping (Recommendation) -> Void ) {
         let url = "https://api.themoviedb.org/3/movie/\(id)/recommendations?api_key=\(Key.tmdbKey)"
         
-//        AF.request(url).validate(statusCode: 200...500).responseJSON { response in
-//            switch response.result {
-//            case .success(let value):
-//                let json = JSON(value)
-//                print("JSON: \(json)")
-//
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
         AF.request(url).validate(statusCode: 200...500).responseDecodable(of: Recommendation.self) { response in
             switch response.result {
             case .success(let value):
@@ -109,6 +113,10 @@ extension PosterViewController: UICollectionViewDelegate, UICollectionViewDataSo
             return list.results.count
         } else if section == 1 {
             return secondList.results.count
+        } else if section == 2{
+            return thirdList.results.count
+        } else if section == 3 {
+            return fourthList.results.count
         } else {
             return 9
         }
@@ -121,10 +129,17 @@ extension PosterViewController: UICollectionViewDelegate, UICollectionViewDataSo
         }
         
         if indexPath.section == 0 {
-            let url = "https://www.themoviedb.org/t/p/w440_and_h660_face\(list.results[indexPath.row].posterPath ?? "")"
+//            let url = "https://www.themoviedb.org/t/p/w440_and_h660_face\(list.results[indexPath.row].posterPath ?? "")"
+            let url = makePosterURL(list: list, indexPath: indexPath)
             cell.posterImageView.kf.setImage(with: URL(string: url))
         } else if indexPath.section == 1 {
             let url = "https://www.themoviedb.org/t/p/w440_and_h660_face\(secondList.results[indexPath.row].posterPath ?? "")"
+            cell.posterImageView.kf.setImage(with: URL(string: url))
+        } else if indexPath.section == 2 {
+            let url = makePosterURL(list: thirdList, indexPath: indexPath)
+            cell.posterImageView.kf.setImage(with: URL(string: url))
+        } else if indexPath.section == 3 {
+            let url = makePosterURL(list: fourthList, indexPath: indexPath)
             cell.posterImageView.kf.setImage(with: URL(string: url))
         }
         
@@ -174,6 +189,14 @@ extension PosterViewController: CollectionViewAttributeProtocol {
         posterCollectionView.collectionViewLayout = layout
     }
     
+}
+
+extension PosterViewController {
+    func makePosterURL(list: Recommendation, indexPath: IndexPath) -> String{
+        let baseURL: String = "https://www.themoviedb.org/t/p/w440_and_h660_face"
+        
+        return baseURL + "\(list.results[indexPath.row].posterPath ?? "")"
+    }
 }
 
 
