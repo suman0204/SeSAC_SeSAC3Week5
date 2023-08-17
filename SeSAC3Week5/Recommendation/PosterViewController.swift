@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Kingfisher
 
 protocol CollectionViewAttributeProtocol {
     func configureCollectionView()
@@ -20,6 +21,9 @@ class PosterViewController: UIViewController {
     
     var list: Recommendation = Recommendation(totalResults: 0, results: [], page: 0, totalPages: 0)
     
+    var secondList: Recommendation = Recommendation(totalResults: 0, results: [], page: 0, totalPages: 0)
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,11 +34,32 @@ class PosterViewController: UIViewController {
         configureCollectionView()
         configureCollectionViewLayout()
         
-        callRecommendation(id: 479718)
+        callRecommendation(id: 671) { data in
+            self.list = data
+            self.posterCollectionView.reloadData()
+        }
+        
+        callRecommendation(id: 479718) { data in
+            self.secondList = data
+            self.posterCollectionView.reloadData()
+        }
+          // 콜백 지옥..
+//        callRecommendation(id: 671) { data in
+//            self.list = data
+//
+//            self.callRecommendation(id: 671) { data in
+//                self.list = data
+//
+//                self.callRecommendation(id: 671) { data in
+//                    self.list = data
+//                    self.posterCollectionView.reloadData()
+//                }
+//            }
+//        }
     }
     
     //범죄도시: 479718 /인터스텔라: 157336 /극한직업: 567646 /해리포터: 671
-    func callRecommendation(id: Int) {
+    func callRecommendation(id: Int, completionHandler: @escaping (Recommendation) -> Void ) {
         let url = "https://api.themoviedb.org/3/movie/\(id)/recommendations?api_key=\(Key.tmdbKey)"
         
 //        AF.request(url).validate(statusCode: 200...500).responseJSON { response in
@@ -50,8 +75,9 @@ class PosterViewController: UIViewController {
         AF.request(url).validate(statusCode: 200...500).responseDecodable(of: Recommendation.self) { response in
             switch response.result {
             case .success(let value):
+//                print(value)
+                completionHandler(value)
                 
-                self.list = value
                 
             case .failure(let error):
                 print(error)
@@ -79,13 +105,27 @@ extension PosterViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 9
+        if section == 0 {
+            return list.results.count
+        } else if section == 1 {
+            return secondList.results.count
+        } else {
+            return 9
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.identifier, for: indexPath) as? PosterCollectionViewCell else {
             return UICollectionViewCell()
+        }
+        
+        if indexPath.section == 0 {
+            let url = "https://www.themoviedb.org/t/p/w440_and_h660_face\(list.results[indexPath.row].posterPath ?? "")"
+            cell.posterImageView.kf.setImage(with: URL(string: url))
+        } else if indexPath.section == 1 {
+            let url = "https://www.themoviedb.org/t/p/w440_and_h660_face\(secondList.results[indexPath.row].posterPath ?? "")"
+            cell.posterImageView.kf.setImage(with: URL(string: url))
         }
         
         cell.posterImageView.backgroundColor = UIColor(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1)
