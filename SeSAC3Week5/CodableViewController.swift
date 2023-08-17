@@ -23,8 +23,32 @@ class CodableViewController: UIViewController {
     @IBOutlet var checkButton: UIButton!
     @IBOutlet var dateTextField: UITextField!
     
+    @IBOutlet var tempLabel: UILabel!
+    @IBOutlet var humidityLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        WeatherManager.shared.callRequestCodable { data in
+            self.tempLabel.text = "\(data.main.temp)"
+        } failure: {
+            print("show Alert") //present는 뷰 영역에서만 동작하기 때문에 여기서 대응해준다
+        }
+
+        
+        WeatherManager.shared.callRequestString { temp, humidity in
+            self.tempLabel.text = temp
+            self.humidityLabel.text = humidity
+        }
+        
+        WeatherManager.shared.callRequestJSON { json in
+            
+            let temp = json["main"]["temp"].doubleValue - 273.15
+            let humidity = json["main"]["humidity"].intValue
+            
+            self.tempLabel.text = "\(temp)"
+            self.humidityLabel.text = "\(humidity)"
+        }
         
 //        fetchTranslateData(source: "ko", target: "en", text: "안녕하세요")
 

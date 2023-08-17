@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import SwiftyJSON
 
 protocol CollectionViewAttributeProtocol {
     func configureCollectionView()
@@ -17,6 +18,8 @@ class PosterViewController: UIViewController {
 
     @IBOutlet var posterCollectionView: UICollectionView!
     
+    var list: Recommendation = Recommendation(totalResults: 0, results: [], page: 0, totalPages: 0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,6 +29,34 @@ class PosterViewController: UIViewController {
         
         configureCollectionView()
         configureCollectionViewLayout()
+        
+        callRecommendation(id: 479718)
+    }
+    
+    //범죄도시: 479718 /인터스텔라: 157336 /극한직업: 567646 /해리포터: 671
+    func callRecommendation(id: Int) {
+        let url = "https://api.themoviedb.org/3/movie/\(id)/recommendations?api_key=\(Key.tmdbKey)"
+        
+//        AF.request(url).validate(statusCode: 200...500).responseJSON { response in
+//            switch response.result {
+//            case .success(let value):
+//                let json = JSON(value)
+//                print("JSON: \(json)")
+//
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
+        AF.request(url).validate(statusCode: 200...500).responseDecodable(of: Recommendation.self) { response in
+            switch response.result {
+            case .success(let value):
+                
+                self.list = value
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     
