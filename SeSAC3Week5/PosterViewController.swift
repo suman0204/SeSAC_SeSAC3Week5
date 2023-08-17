@@ -8,6 +8,11 @@
 import UIKit
 import Alamofire
 
+protocol CollectionViewAttributeProtocol {
+    func configureCollectionView()
+    func configureCollectionViewLayout()
+}
+
 class PosterViewController: UIViewController {
 
     @IBOutlet var posterCollectionView: UICollectionView!
@@ -15,35 +20,23 @@ class PosterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        LottoManager.shared.callLotto { bonus, number in
-            print("클로저로 꺼내온 값: \(bonus), \(number)")
-        }
+//        LottoManager.shared.callLotto { bonus, number in
+//            print("클로저로 꺼내온 값: \(bonus), \(number)")
+//        }
         
-        posterCollectionView.delegate = self
-        posterCollectionView.dataSource = self
-        //셀 등록
-        posterCollectionView.register(UINib(nibName: "PosterCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PosterCollectionViewCell")
-        //헤더로 사용할 reusableView 등록
-        posterCollectionView.register(UINib(nibName: "HeaderPosterCollectionReusableView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderPosterCollectionReusableView")
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 100, height: 100)
-        layout.minimumLineSpacing = 8
-        layout.minimumInteritemSpacing = 8
-        layout.scrollDirection = .vertical
-        layout.headerReferenceSize = CGSize(width: 300, height: 50)
-        
-        posterCollectionView.collectionViewLayout = layout
+        configureCollectionView()
+        configureCollectionViewLayout()
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        showAlert(title: "테스트 얼럿", message: "메시지 입니다", buttonTitle: "배경색 변경") {
-            print("저장 버튼을 클릭했습니다")
-            self.posterCollectionView.backgroundColor = .lightGray
-        }
-        print("AAA")
+//        showAlert(title: "테스트 얼럿", message: "메시지 입니다", buttonTitle: "배경색 변경") {
+//            print("저장 버튼을 클릭했습니다")
+//            self.posterCollectionView.backgroundColor = .lightGray
+//        }
+//        print("AAA")
     }
     
 }
@@ -84,4 +77,29 @@ extension PosterViewController: UICollectionViewDelegate, UICollectionViewDataSo
             return UICollectionReusableView()
         }
     }
+}
+
+
+extension PosterViewController: CollectionViewAttributeProtocol {
+    
+    func configureCollectionView() {
+        posterCollectionView.delegate = self
+        posterCollectionView.dataSource = self
+        //셀 등록
+        posterCollectionView.register(UINib(nibName: "PosterCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PosterCollectionViewCell")
+        //헤더로 사용할 reusableView 등록
+        posterCollectionView.register(UINib(nibName: "HeaderPosterCollectionReusableView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderPosterCollectionReusableView")
+    }
+    
+    func configureCollectionViewLayout() {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 100, height: 100)
+        layout.minimumLineSpacing = 8
+        layout.minimumInteritemSpacing = 8
+        layout.scrollDirection = .vertical
+        layout.headerReferenceSize = CGSize(width: 300, height: 50)
+        
+        posterCollectionView.collectionViewLayout = layout
+    }
+    
 }
