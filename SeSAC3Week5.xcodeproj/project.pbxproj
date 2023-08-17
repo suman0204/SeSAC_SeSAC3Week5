@@ -25,6 +25,8 @@
 		8BF852B72A8C752A00F57338 /* HeaderPosterCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF852B52A8C752A00F57338 /* HeaderPosterCollectionReusableView.swift */; };
 		8BF852B82A8C752A00F57338 /* HeaderPosterCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BF852B62A8C752A00F57338 /* HeaderPosterCollectionReusableView.xib */; };
 		8BF852BA2A8C779E00F57338 /* PosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF852B92A8C779E00F57338 /* PosterViewController.swift */; };
+		8BF852BD2A8DA32000F57338 /* Extension+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF852BC2A8DA32000F57338 /* Extension+Alert.swift */; };
+		8BF852C02A8DAB8900F57338 /* LottoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF852BF2A8DAB8900F57338 /* LottoManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		8BF852B52A8C752A00F57338 /* HeaderPosterCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderPosterCollectionReusableView.swift; sourceTree = "<group>"; };
 		8BF852B62A8C752A00F57338 /* HeaderPosterCollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderPosterCollectionReusableView.xib; sourceTree = "<group>"; };
 		8BF852B92A8C779E00F57338 /* PosterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterViewController.swift; sourceTree = "<group>"; };
+		8BF852BC2A8DA32000F57338 /* Extension+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Alert.swift"; sourceTree = "<group>"; };
+		8BF852BF2A8DAB8900F57338 /* LottoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottoManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +85,8 @@
 		041AE3CB2A899B28007724AE /* SeSAC3Week5 */ = {
 			isa = PBXGroup;
 			children = (
+				8BF852BE2A8DAB6D00F57338 /* Lotto */,
+				8BF852BB2A8DA30300F57338 /* Extension */,
 				8BF852B02A8C74EB00F57338 /* View */,
 				041AE3E02A899B9F007724AE /* Network */,
 				041AE3CC2A899B28007724AE /* AppDelegate.swift */,
@@ -115,6 +121,22 @@
 				8BF852B62A8C752A00F57338 /* HeaderPosterCollectionReusableView.xib */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		8BF852BB2A8DA30300F57338 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				8BF852BC2A8DA32000F57338 /* Extension+Alert.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		8BF852BE2A8DAB6D00F57338 /* Lotto */ = {
+			isa = PBXGroup;
+			children = (
+				8BF852BF2A8DAB8900F57338 /* LottoManager.swift */,
+			);
+			path = Lotto;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,8 +223,10 @@
 			files = (
 				041AE3D12A899B28007724AE /* ViewController.swift in Sources */,
 				041AE3CD2A899B28007724AE /* AppDelegate.swift in Sources */,
+				8BF852C02A8DAB8900F57338 /* LottoManager.swift in Sources */,
 				8BF852B72A8C752A00F57338 /* HeaderPosterCollectionReusableView.swift in Sources */,
 				041AE3E92A89A265007724AE /* GCDBasicViewController.swift in Sources */,
+				8BF852BD2A8DA32000F57338 /* Extension+Alert.swift in Sources */,
 				8BF852AF2A8C4B1A00F57338 /* CodableViewController.swift in Sources */,
 				8BF852BA2A8C779E00F57338 /* PosterViewController.swift in Sources */,
 				041AE3E42A899D2C007724AE /* APIKey.swift in Sources */,
