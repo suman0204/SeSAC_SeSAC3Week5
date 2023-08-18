@@ -27,6 +27,7 @@ class PosterViewController: UIViewController {
     
     var fourthList: Recommendation = Recommendation(totalResults: 0, results: [], page: 0, totalPages: 0)
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,25 +38,58 @@ class PosterViewController: UIViewController {
         configureCollectionView()
         configureCollectionViewLayout()
         
-        callRecommendation(id: 671) { data in
-            self.list = data
+        let id = [673, 674, 675, 676]
+        
+        let group = DispatchGroup()
+        
+        for item in id {
+            group.enter()
+            callRecommendation(id: item) { data in
+                //데이터는 이차원배열을 활용해서 담아준다
+                //or 조건문으로 대응
+                if item == 673 {
+                    self.list = data
+                }
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
             self.posterCollectionView.reloadData()
         }
         
-        callRecommendation(id: 479718) { data in
-            self.secondList = data
-            self.posterCollectionView.reloadData()
-        }
         
-        callRecommendation(id: 157336) { data in
-            self.thirdList = data
-            self.posterCollectionView.reloadData()
-        }
+        //Font
+//        for item in UIFont.familyNames {
+//            print(item)
+//
+//            for name in UIFont.fontNames(forFamilyName: item) {
+//                print("===\(name)")
+//            }
+//        }
         
-        callRecommendation(id: 567646) { data in
-            self.fourthList = data
-            self.posterCollectionView.reloadData()
-        }
+
+
+//        callRecommendation(id: 671) { data in
+//            self.list = data
+//            self.posterCollectionView.reloadData()
+//        }
+//
+//        callRecommendation(id: 479718) { data in
+//            self.secondList = data
+//            self.posterCollectionView.reloadData()
+//        }
+//
+//        callRecommendation(id: 157336) { data in
+//            self.thirdList = data
+//            self.posterCollectionView.reloadData()
+//        }
+//
+//        callRecommendation(id: 567646) { data in
+//            self.fourthList = data
+//            self.posterCollectionView.reloadData()
+//        }
+        
+
         
           // 콜백 지옥..
 //        callRecommendation(id: 671) { data in
@@ -70,6 +104,102 @@ class PosterViewController: UIViewController {
 //                }
 //            }
 //        }
+    }
+    
+    @IBAction func sendNotification(_ sender: UIButton) {
+        
+        //foreground상태에서는 알림이 안뜨는게 디폴트
+        
+        
+        //1.컨텐츠 내용 입력 2.언제 보낼지 설정  => 알림 보낸다
+        //1. 컨텐츠
+        let content = UNMutableNotificationContent()
+        content.title = "다마고치에게 물을 \(Int.random(in: 10...100))모금 주세요"
+        content.body = "아직 레벨 3이에요. 물을 주세요!"
+        content.badge = 100
+        
+        //2. 언제
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: "\(Date())", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            print(error)
+        }
+    }
+    
+    func dispatchGroupEnterLeave() {
+        let group = DispatchGroup()
+        
+        group.enter() // +1 그룹에 대한 레퍼런스 카운트가 1 늘어남
+        callRecommendation(id: 671) { data in
+            self.list = data
+            print("===1===")
+            group.leave() // -1 그룹의 레퍼런스 카운트가 1 줄어듬 / 네트워크 응답을 받고 떠난다
+        }
+        
+        group.enter()
+        callRecommendation(id: 479718) { data in
+            self.secondList = data
+            print("===2===")
+            group.leave()
+        }
+        
+        group.enter()
+        callRecommendation(id: 157336) { data in
+            self.thirdList = data
+            print("===3===")
+            group.leave()
+        }
+        
+        group.enter()
+        callRecommendation(id: 567646) { data in
+            self.fourthList = data
+            print("===4===")
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            print("===END===")
+            self.posterCollectionView.reloadData()
+        }
+    }
+    
+    func dispatchGroupNotify() {
+        let group = DispatchGroup()
+        
+        DispatchQueue.global().async(group: group) {
+            self.callRecommendation(id: 671) { data in
+                self.list = data
+                print("===1===")
+            }
+        }
+        
+        DispatchQueue.global().async(group: group) {
+            self.callRecommendation(id: 672) { data in
+                self.secondList = data
+                print("===2===")
+            }
+        }
+        
+        DispatchQueue.global().async(group: group) {
+            self.callRecommendation(id: 673) { data in
+                self.thirdList = data
+                print("===3===")
+            }
+        }
+        
+        DispatchQueue.global().async(group: group) {
+            self.callRecommendation(id: 674) { data in
+                self.fourthList = data
+                print("===4===")
+            }
+        }
+        
+        group.notify(queue: .main) {
+            print("END")
+            self.posterCollectionView.reloadData()
+        }
     }
     
     //범죄도시: 479718 /인터스텔라: 157336 /극한직업: 567646 /해리포터: 671
@@ -156,7 +286,7 @@ extension PosterViewController: UICollectionViewDelegate, UICollectionViewDataSo
             }
             
             view.titleLabel.text = "테스트 섹션"
-            
+            view.titleLabel.font = UIFont(name: "GmarketSansBold", size: 20)
             return view
             
         } else {
