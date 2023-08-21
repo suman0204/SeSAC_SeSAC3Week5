@@ -27,7 +27,7 @@ protocol ReusableViewProtocol {
 //}
 extension UIViewController: ReusableViewProtocol { }
 extension UITableViewCell: ReusableViewProtocol { }
-//extension UICollectionViewCell: ReusableViewProtocol { } 
+//extension UICollectionViewCell: ReusableViewProtocol { } V
 extension UICollectionReusableView: ReusableViewProtocol { }
 
 extension ReusableViewProtocol {
